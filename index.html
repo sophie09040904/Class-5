@@ -1,0 +1,852 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WING SKY - Flight Training Center</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 5px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.5s ease;
+        }
+        
+        /* Dynamic backgrounds */
+        .terminology-bg {
+            background: linear-gradient(135deg, #a8d8ea 0%, #fcf6bd 100%);
+        }
+        
+        .announcement-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .roleplay-bg {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+        }
+        
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            max-width: 95vw;
+            width: 95%;
+            min-height: 90vh;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        .header-section {
+            flex-shrink: 0;
+        }
+        
+        .content-section {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .footer-section {
+            flex-shrink: 0;
+        }
+        
+        .logo {
+            margin-bottom: 10px;
+        }
+        
+        .wing {
+            font-weight: 800;
+            font-size: 1.8em;
+            letter-spacing: 1px;
+            font-family: 'Nunito', sans-serif;
+            transition: color 0.3s ease;
+        }
+        
+        .sky {
+            font-weight: 800;
+            font-size: 1.8em;
+            letter-spacing: 1px;
+            font-family: 'Nunito', sans-serif;
+            transition: color 0.3s ease;
+        }
+        
+        /* Logo colors for different sections */
+        .terminology .wing { color: #ff8c00; }
+        .terminology .sky { color: #666; }
+        .announcement .wing { color: #667eea; }
+        .announcement .sky { color: #764ba2; }
+        .roleplay .wing { color: #ff6b6b; }
+        .roleplay .sky { color: #4ecdc4; }
+        
+        .class-title {
+            font-size: 1.1em;
+            color: #28a745;
+            font-weight: bold;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 15px;
+            margin-top: 5px;
+            font-size: 2.2em;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            transition: background 0.3s ease;
+        }
+        
+        /* Section titles */
+        .terminology h1 {
+            background: linear-gradient(135deg, #a8d8ea, #fcf6bd);
+        }
+        .announcement h1 {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+        .roleplay h1 {
+            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+        }
+        
+        /* Navigation tabs */
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .nav-tab {
+            background: #f8f9fa;
+            border: 2px solid #ddd;
+            border-radius: 25px;
+            padding: 12px 25px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #666;
+        }
+        
+        .nav-tab.active {
+            color: white;
+            border-color: transparent;
+        }
+        
+        .nav-tab.terminology.active {
+            background: linear-gradient(45deg, #a8d8ea, #fcf6bd);
+        }
+        
+        .nav-tab.announcement.active {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+        }
+        
+        .nav-tab.roleplay.active {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+        }
+        
+        .nav-tab:hover:not(.active) {
+            background: #e9ecef;
+            transform: translateY(-1px);
+        }
+        
+        .display-area {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 30px 25px;
+            margin: 30px 0;
+            min-height: 350px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow-y: auto;
+            transition: border-left 0.3s ease;
+        }
+        
+        .terminology .display-area {
+            border-left: 5px solid #a8d8ea;
+        }
+        
+        .announcement .display-area {
+            border-left: 5px solid #667eea;
+        }
+        
+        .roleplay .display-area {
+            border-left: 5px solid #ff6b6b;
+        }
+        
+        /* Terminology styles */
+        .word-text {
+            font-size: 3.5em;
+            color: #2c3e50;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .meaning-text {
+            font-size: 1.8em;
+            color: #555;
+            line-height: 1.4;
+            font-weight: 500;
+            text-align: center;
+            font-style: italic;
+        }
+        
+        /* Announcement styles */
+        .announcement-title {
+            font-size: 2.2em;
+            color: #667eea;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+        
+        .announcement-text {
+            font-size: 1.3em;
+            color: #333;
+            line-height: 1.8;
+            font-weight: 500;
+            text-align: left;
+            max-width: 100%;
+            white-space: pre-line;
+        }
+        
+        /* Role play styles */
+        .question-number {
+            font-size: 1.2em;
+            color: #ff6b6b;
+            font-weight: 800;
+            margin-bottom: 20px;
+            background: #fff2f2;
+            padding: 10px 20px;
+            border-radius: 25px;
+            border: 2px solid #ff6b6b;
+        }
+        
+        .question-text {
+            font-size: 1.4em;
+            color: #333;
+            line-height: 1.6;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 25px;
+            max-width: 100%;
+        }
+        
+        .answer-text {
+            font-size: 1.2em;
+            color: #555;
+            line-height: 1.7;
+            font-weight: 500;
+            text-align: left;
+            max-width: 100%;
+            background: #e8f5e8;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #28a745;
+            margin-top: 20px;
+        }
+        
+        .no-answer {
+            font-size: 1.1em;
+            color: #999;
+            font-style: italic;
+            text-align: center;
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        
+        .placeholder-text {
+            color: #999;
+            font-style: italic;
+            font-size: 1.5em;
+        }
+        
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        .button {
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 18px 35px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 5px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            min-width: 140px;
+        }
+        
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 20px rgba(0,0,0,0.3);
+        }
+        
+        .button:active {
+            transform: translateY(0);
+        }
+        
+        .button:disabled {
+            background: linear-gradient(45deg, #ccc, #999) !important;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .button:disabled:hover {
+            transform: none;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        /* Section-specific button colors */
+        .terminology .button {
+            background: linear-gradient(45deg, #a8d8ea, #fcf6bd);
+            color: #333;
+        }
+        
+        .announcement .button {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+        }
+        
+        .roleplay .button {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+        }
+        
+        .previous-button {
+            background: linear-gradient(45deg, #6f42c1, #9c88ff) !important;
+            color: white !important;
+        }
+        
+        .answer-button {
+            background: linear-gradient(45deg, #28a745, #20c997) !important;
+            margin-top: 10px;
+        }
+        
+        .reset-button {
+            background: linear-gradient(45deg, #6c757d, #495057) !important;
+            color: white !important;
+        }
+        
+        .stats {
+            margin-top: 15px;
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 1.8em;
+            }
+            
+            .word-text {
+                font-size: 2.8em;
+            }
+            
+            .meaning-text {
+                font-size: 1.4em;
+            }
+            
+            .announcement-title {
+                font-size: 1.6em;
+            }
+            
+            .announcement-text {
+                font-size: 1.1em;
+                line-height: 1.6;
+            }
+            
+            .question-text {
+                font-size: 1.2em;
+                line-height: 1.5;
+            }
+            
+            .answer-text {
+                font-size: 1.1em;
+                line-height: 1.6;
+                padding: 15px;
+            }
+            
+            .button {
+                padding: 12px 25px;
+                font-size: 1em;
+                min-width: 110px;
+            }
+            
+            .button-container {
+                gap: 10px;
+            }
+            
+            .display-area {
+                padding: 20px 15px;
+                min-height: 300px;
+            }
+            
+            .nav-tabs {
+                gap: 5px;
+            }
+            
+            .nav-tab {
+                padding: 8px 15px;
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body class="terminology-bg">
+    <div class="container">
+        <div class="header-section">
+            <div class="logo">
+                <span class="wing">WING</span> <span class="sky">SKY</span>
+            </div>
+            <div class="class-title">Sophie's Class</div>
+            <h1 id="sectionTitle">✈️ Airline Terminology</h1>
+            
+            <div class="nav-tabs">
+                <div class="nav-tab terminology active" onclick="switchSection('terminology')">📖 Terminology</div>
+                <div class="nav-tab announcement" onclick="switchSection('announcement')">📢 Announcements</div>
+                <div class="nav-tab roleplay" onclick="switchSection('roleplay')">🎭 Role Play</div>
+            </div>
+        </div>
+        
+        <div class="content-section">
+            <div class="display-area" id="displayArea">
+                <div class="placeholder-text">Click "Next Word" to start learning!</div>
+            </div>
+        </div>
+        
+        <div class="footer-section">
+            <div class="button-container" id="buttonContainer">
+                <button class="button previous-button" id="previousButton" onclick="showPrevious()" disabled>⬅️ Previous</button>
+                <button class="button" id="nextButton" onclick="showNext()">📖 Next Word</button>
+                <button class="button answer-button" id="answerButton" onclick="showAnswer()" style="display: none;">💡 Answer</button>
+                <button class="button reset-button" onclick="resetSection()">🔄 Start Over</button>
+            </div>
+            
+            <div class="stats" id="stats">
+                Total 36 terms • 0 learned
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data for all sections
+        const terminologies = [
+            { word: "Aisle", meaning: "corridor in airplane between the seats" },
+            { word: "Baggage", meaning: "the bags and suitcases that travelers put their belongings in" },
+            { word: "Board", meaning: "to get on or enter an airplane" },
+            { word: "Baggage claim", meaning: "place where you pick up your baggage after arrival" },
+            { word: "Boarding pass", meaning: "part of the ticket that you give to the crew as you step onto the plane" },
+            { word: "Cabin", meaning: "interior of the aircraft" },
+            { word: "Captain", meaning: "the person who is in charge of the plane" },
+            { word: "Cockpit", meaning: "the part of the plane where the captain and his co-pilots sit" },
+            { word: "Check-in", meaning: "to register for a flight, inc. checking of tickets, passports, luggage etc." },
+            { word: "Complimentary", meaning: "free of charge" },
+            { word: "Co-pilot", meaning: "the person who helps the captain fly the plane" },
+            { word: "Depart", meaning: "leave" },
+            { word: "Duty free", meaning: "not taxable" },
+            { word: "Domestic", meaning: "within the same country national, not international" },
+            { word: "Emergency exit", meaning: "section of the plane that opens in case of an accident" },
+            { word: "Flight", meaning: "an airplane scheduled to fly a certain route at a certain time" },
+            { word: "Gate", meaning: "place where passengers go to wait to board a plane" },
+            { word: "ICAO", meaning: "International Civil Aviation Organization" },
+            { word: "IATA", meaning: "International Air Transport Association" },
+            { word: "Jet lag", meaning: "tiredness due to traveling through different time zones" },
+            { word: "Land", meaning: "returning to the ground after being in the air" },
+            { word: "Overbooked", meaning: "more passengers than available seats" },
+            { word: "Layover", meaning: "a period of time with a transfer between aircraft of less than 24 hours" },
+            { word: "Stopover", meaning: "a period of time with a transfer between aircraft of greater than 24 hours" },
+            { word: "Overhead bin", meaning: "place above the seats for storing luggage" },
+            { word: "Passport", meaning: "document that proves a person's identification and nationality" },
+            { word: "Visa", meaning: "a document that allows entry to a country" },
+            { word: "Pilot", meaning: "the person who drives the plane" },
+            { word: "Refreshments", meaning: "drinks and snacks" },
+            { word: "Seatbelt", meaning: "devices that hold passengers in their seats" },
+            { word: "Take off", meaning: "when the plane leaves the ground" },
+            { word: "Taxi in, out", meaning: "driving an airplane to the correct place for taking off or deboarding" },
+            { word: "Touch down", meaning: "when the aircraft wheels land on the ground" },
+            { word: "Transit", meaning: "people on the same flight/plane/airline. For example when a plane lands to refuel" },
+            { word: "Transfer", meaning: "people switching flight/plane airline" },
+            { word: "Turbulence", meaning: "rough flight" }
+        ];
+
+        const announcements = [
+            {
+                title: "WELCOME",
+                text: "Good morning (afternoon/evening), ladies and gentlemen. We would like to welcome you on board Korean Air, a member of SkyTeam. This is flight ___, bound for ___ (via ___). During the flight, our cabin crew will be happy to assist you in any way we can.\n\nLarger devices such as laptops must be stowed in the overhead bins or under the seat in front of you.\n\nPlease cooperate with cabin crew who act as safety officers during the flight. Also, we ask that you direct your attention to the video screens (cabin crew) for important safety information."
+            },
+            {
+                title: "SEATBELT SIGN OFF",
+                text: "Ladies and gentlemen, the captain has turned off the seatbelt sign. But we recommend that you keep your seatbelt fastened at all times.\n\nYou are also reminded that smoking and the use of electronic cigarettes are against the law. Thank you."
+            },
+            {
+                title: "APPROACHING",
+                text: "Ladies and gentlemen, we are approaching ___ airport.\n\nPlease return your seat and tray table to the upright position, and stow your carry-on items, including laptops and other larger electronic devices, in the overhead bins or under the seat in front of you. Thank you."
+            },
+            {
+                title: "FAREWELL",
+                text: "Ladies and gentlemen,\n\nWe have landed at ( ) (international) airport.\n\nPlease remain seated until the captain turns off the seatbelt sign. Be careful when opening the overhead bins as the contents may fall out.\n\nThank you for choosing Korean Air, a member of SkyTeam and we hope to see you again soon."
+            }
+        ];
+
+        const roleplays = [
+            {
+                number: "Q1",
+                question: "What would you do if a passenger were to be walking around the cabin when the seatbelt sign was on?",
+                answer: "I would make the passenger return to his or her seat explaining the in-flight safety policy. Then I would make sure his or her seatbelt was fastened properly for the passenger's safety."
+            },
+            {
+                number: "Q2",
+                question: "If a passenger smoked on the plane, how would you handle him?",
+                answer: "First, I would stop him or her from smoking in an assertive way and make sure that the cigarette was safely out. Then I would explain the dangers of in-flight smoking. Next, I would inform it to the rest of the team including the flight crew and keep monitoring him throughout the flight. Then I would provide the passenger with something sweet such as candies or chocolates for reducing the craving of smoking."
+            },
+            {
+                number: "Q3",
+                question: "If a passenger complained that it was really hot/cold in the cabin, what would you do?",
+                answer: "First, I would see if I could adjust the temperature in the cabin. If the other passengers do not share it, Hot: then I would bring some cold beverages for the passenger. Cold: then I would bring a blanket for the passenger."
+            },
+            {
+                number: "Q4",
+                question: "If a drunken passenger kept requiring more alcohol, what would you do?",
+                answer: "As cabin crew are in charge of safety and well-being of passengers during the flight, I would recommend him or her non-alcoholic beverages telling the passenger that it is easier to get drunk in the cabin than on the ground because of the high altitude. If the passenger insisted on being served an alcoholic drink, then I would reduce his consumption of alcohol by delaying delivery on purpose and by diluting the drink. Meanwhile I would inform other flight attendants about the passenger's drunken state."
+            },
+            {
+                number: "Q5",
+                question: "A passenger wants to have bibimbap, but you have run out. What would you say?",
+                answer: "In that situation, I would first apologize for not being able to provide the meal, then I would find out whether any of the other crew members or classes had that meal choice chosen by the passenger. If so, I would offer the passenger the meal of his or her choice. If it were not available, I would provide extra service to keep the passenger happy, and I would make sure that the passenger's preference was satisfied for the next in-flight meal service by taking an order from the passenger in advance."
+            },
+            {
+                number: "Q6",
+                question: "If an economy-passenger asked for the first-class meal, what would you do?",
+                answer: "I would say, \"Sorry, sir. The first class meal is prepared for the exact number of the first class passengers. The economy class meal is just as delicious as the first class meal.\""
+            },
+            {
+                number: "Q7",
+                question: "You spilled hot coffee/tomato juice on a passenger during sudden turbulence. What would you do?",
+                answer: "I would immediately apologize and wipe it off with a wet towel. If the passenger got burned, I would treat him or her by applying an ice bag or some ointment as trained. Furthermore, I would inform it to the rest of the team and keep monitoring his or her condition during the flight."
+            },
+            {
+                number: "Q8",
+                question: "If a passenger took a blanket, what would you do?",
+                answer: "I would say very politely, \"We need the blankets for the next passengers. I am sorry about that.\""
+            },
+            {
+                number: "Q9",
+                question: "What would you do if a passenger became upset?",
+                answer: "First of all, I would listen carefully and identify what made him or her upset. Then I would apologize and show genuine concern for the passenger's discomfort and inconvenience. After that, I would try my best to find a solution for the passenger as quickly as possible. Of course, I would try to make the passenger satisfied with my extraordinary service during the flight."
+            },
+            {
+                number: "Q10",
+                question: "If a passenger asked you on a date, what would you do?",
+                answer: "I would express my thanks to him for asking me to have a date. However, I would say that I cannot accept it because I have a boyfriend (or I am working now). Then I would serve him politely to give him a good impression of our company and to encourage him to fly with us again."
+            },
+            {
+                number: "Q11",
+                question: "How would you handle a situation if a passenger were to complain about a baby crying?",
+                answer: "I would first show genuine concern for the passenger's discomfort and inconvenience, and then I would ask the mother whether there was anything I would do to help settle the baby. If an alternative seat were available, I would move the passenger. If the baby continued crying, I would invite the mother to take her child to the galley, where she would have more space to treat her baby."
+            },
+            {
+                number: "Q12",
+                question: "If a child was running in the cabin, what would you do?",
+                answer: null
+            },
+            {
+                number: "Q13",
+                question: "What if a customer complains that the person sitting next to him or her smells bad?",
+                answer: null
+            },
+            {
+                number: "Q14",
+                question: "What would you do if I told you I thought your interview was terrible?",
+                answer: null
+            }
+        ];
+
+        // Global state
+        let currentSection = 'terminology';
+        let currentIndex = -1;
+        let displayedQuestions = [];
+
+        // Sound function
+        function playClickSound() {
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.setValueAtTime(700, audioContext.currentTime);
+                oscillator.frequency.setValueAtTime(500, audioContext.currentTime + 0.1);
+                
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.2);
+            } catch (error) {
+                // Ignore sound errors
+            }
+        }
+
+        function switchSection(section) {
+            playClickSound();
+            
+            currentSection = section;
+            currentIndex = section === 'announcement' ? 0 : -1;
+            displayedQuestions = [];
+            
+            // Update UI classes
+            document.body.className = section + '-bg';
+            document.querySelector('.container').className = 'container ' + section;
+            
+            // Update navigation tabs
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelector('.nav-tab.' + section).classList.add('active');
+            
+            // Update section title and buttons
+            updateSectionUI();
+            resetContent();
+        }
+
+        function updateSectionUI() {
+            const sectionTitle = document.getElementById('sectionTitle');
+            const nextButton = document.getElementById('nextButton');
+            
+            switch(currentSection) {
+                case 'terminology':
+                    sectionTitle.textContent = '✈️ Airline Terminology';
+                    nextButton.textContent = '📖 Next Word';
+                    break;
+                case 'announcement':
+                    sectionTitle.textContent = '📢 In-flight Announcement';
+                    nextButton.textContent = '📢 Next Announcement';
+                    break;
+                case 'roleplay':
+                    sectionTitle.textContent = '🎭 Role Play';
+                    nextButton.textContent = '❓ Next Question';
+                    break;
+            }
+        }
+
+        function showNext() {
+            playClickSound();
+            
+            switch(currentSection) {
+                case 'terminology':
+                    showNextTerm();
+                    break;
+                case 'announcement':
+                    showNextAnnouncement();
+                    break;
+                case 'roleplay':
+                    showNextQuestion();
+                    break;
+            }
+        }
+
+        function showPrevious() {
+            playClickSound();
+            
+            if (currentIndex <= 0) return;
+            
+            currentIndex--;
+            displayContent();
+        }
+
+        function showNextTerm() {
+            if (currentIndex >= terminologies.length - 1) {
+                alert("All terminology completed! Please click 'Start Over' button.");
+                return;
+            }
+            currentIndex++;
+            displayContent();
+        }
+
+        function showNextAnnouncement() {
+            if (currentIndex >= announcements.length) {
+                alert("All announcements completed! Please click 'Start Over' button.");
+                return;
+            }
+            displayContent();
+            currentIndex++;
+        }
+
+        function showNextQuestion() {
+            if (currentIndex >= roleplays.length - 1) {
+                alert("All questions completed! Please click 'Start Over' button.");
+                return;
+            }
+            currentIndex++;
+            displayContent();
+        }
+
+        function displayContent() {
+            const displayArea = document.getElementById('displayArea');
+            const answerButton = document.getElementById('answerButton');
+            
+            switch(currentSection) {
+                case 'terminology':
+                    const term = terminologies[currentIndex];
+                    displayArea.innerHTML = '<div class="word-text">' + term.word + '</div><div class="meaning-text">' + term.meaning + '</div>';
+                    answerButton.style.display = 'none';
+                    break;
+                    
+                case 'announcement':
+                    const announcement = announcements[currentIndex];
+                    displayArea.innerHTML = '<div class="announcement-title">' + announcement.title + '</div><div class="announcement-text">' + announcement.text + '</div>';
+                    answerButton.style.display = 'none';
+                    break;
+                    
+                case 'roleplay':
+                    const roleplay = roleplays[currentIndex];
+                    displayArea.innerHTML = '<div class="question-number">' + roleplay.number + '</div><div class="question-text">' + roleplay.question + '</div>';
+                    
+                    if (displayedQuestions.includes(currentIndex)) {
+                        if (roleplay.answer) {
+                            displayArea.innerHTML += '<div class="answer-text">A: ' + roleplay.answer + '</div>';
+                            answerButton.style.display = 'none';
+                        } else {
+                            displayArea.innerHTML += '<div class="no-answer">This question is for practice. Think about your own answer!</div>';
+                            answerButton.style.display = 'none';
+                        }
+                    } else {
+                        if (roleplay.answer) {
+                            answerButton.style.display = 'inline-block';
+                        } else {
+                            displayArea.innerHTML += '<div class="no-answer">This question is for practice. Think about your own answer!</div>';
+                            answerButton.style.display = 'none';
+                            displayedQuestions.push(currentIndex);
+                        }
+                    }
+                    break;
+            }
+            
+            updateButtonStates();
+            updateStats();
+        }
+
+        function showAnswer() {
+            playClickSound();
+            
+            const roleplay = roleplays[currentIndex];
+            const displayArea = document.getElementById('displayArea');
+            const answerButton = document.getElementById('answerButton');
+            
+            displayArea.innerHTML += '<div class="answer-text">A: ' + roleplay.answer + '</div>';
+
+            answerButton.style.display = 'none';
+            
+            if (!displayedQuestions.includes(currentIndex)) {
+                displayedQuestions.push(currentIndex);
+            }
+            
+            updateStats();
+        }
+
+        function updateButtonStates() {
+            const previousButton = document.getElementById('previousButton');
+            
+            if (currentSection === 'announcement') {
+                previousButton.style.display = 'none';
+            } else {
+                previousButton.style.display = 'inline-block';
+                previousButton.disabled = currentIndex <= 0;
+            }
+        }
+
+        function resetSection() {
+            playClickSound();
+            resetContent();
+        }
+
+        function resetContent() {
+            currentIndex = currentSection === 'announcement' ? 0 : -1;
+            displayedQuestions = [];
+            
+            const displayArea = document.getElementById('displayArea');
+            const answerButton = document.getElementById('answerButton');
+            
+            let placeholderText;
+            switch(currentSection) {
+                case 'terminology':
+                    placeholderText = 'Click "Next Word" to start learning!';
+                    break;
+                case 'announcement':
+                    placeholderText = 'Click "Next Announcement" to start learning!';
+                    break;
+                case 'roleplay':
+                    placeholderText = 'Click "Next Question" to start practice!';
+                    break;
+            }
+            
+            displayArea.innerHTML = '<div class="placeholder-text">' + placeholderText + '</div>';
+            answerButton.style.display = 'none';
+            
+            updateButtonStates();
+            updateStats();
+        }
+
+        function updateStats() {
+            const stats = document.getElementById('stats');
+            let statsText;
+            
+            switch(currentSection) {
+                case 'terminology':
+                    const learnedCount = Math.max(0, currentIndex + 1);
+                    statsText = 'Total 36 terms • ' + learnedCount + ' learned';
+                    break;
+                case 'announcement':
+                    statsText = 'Total 4 announcements • ' + currentIndex + ' learned';
+                    break;
+                case 'roleplay':
+                    const completedCount = displayedQuestions.length;
+                    statsText = 'Total 14 questions • ' + completedCount + ' completed';
+                    break;
+            }
+            
+            stats.textContent = statsText;
+        }
+
+        // Initialize
+        updateButtonStates();
+        updateStats();
+    </script>
+</body>
+</html>
